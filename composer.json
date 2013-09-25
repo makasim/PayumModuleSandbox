@@ -9,6 +9,9 @@
     "homepage": "http://framework.zend.com/",
     "require": {
         "php": ">=5.3.3",
-        "zendframework/zendframework": "2.2.*"
+        "zendframework/zendframework": "2.2.*",
+        "payum/payum": "0.6.*@dev",
+        "payum/payum-module": "0.6.*@dev",
+        "payum/paypal-express-checkout-nvp": "0.6.*@dev"
     }
 }

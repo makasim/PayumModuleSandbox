@@ -10,6 +10,16 @@
 return array(
     'router' => array(
         'routes' => array(
+            'done' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/done[/:payum_token]',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Index',
+                        'action'     => 'done',
+                    ),
+                ),
+            ),
             'home' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(

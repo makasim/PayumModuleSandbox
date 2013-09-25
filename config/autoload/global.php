@@ -1,4 +1,10 @@
 <?php
+use Buzz\Client\Curl;
+use Payum\Extension\StorageExtension;
+use Payum\Paypal\ExpressCheckout\Nvp\Api;
+use Payum\Paypal\ExpressCheckout\Nvp\PaymentFactory;
+use Payum\Storage\FilesystemStorage;
+
 /**
  * Global Configuration Override
  *
@@ -11,6 +17,35 @@
  * file.
  */
 
+$paypalPayment = PaymentFactory::create(new Api(new Curl(), array(
+    'username' => 'testrj_1312968849_biz_api1.remixjobs.com',
+    'password' => '1312968888',
+    'signature' => 'Azgw.f7NYjBAlDQEpbI1D06D4ACAAXfoVSV7k4JUuGAPRHzhDbQR2r90',
+    'sandbox' => true
+)));
+
+$paypalPaymentDetailsStorage = new FilesystemStorage(
+    __DIR__.'/../../data',
+    'Application\Model\PaypalPaymentDetails',
+    'id'
+);
+
+$paypalPayment->addExtension(new StorageExtension($paypalPaymentDetailsStorage));
+
 return array(
-    // ...
+    'payum' => array(
+        'token_storage' => new FilesystemStorage(
+            __DIR__.'/../../data',
+            'Payum\Model\Token',
+            'hash'
+        ),
+        'payments' => array(
+            'paypal' => $paypalPayment
+        ),
+        'storages' => array(
+            'paypal' => array(
+                'Application\Model\PaypalPaymentDetails' => $paypalPaymentDetailsStorage,
+            )
+        )
+    ),
 );
