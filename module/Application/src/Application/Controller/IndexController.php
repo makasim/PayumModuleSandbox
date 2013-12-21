@@ -9,18 +9,16 @@
 
 namespace Application\Controller;
 
-use Payum\Request\BinaryMaskStatusRequest;
+use Payum\Core\Request\BinaryMaskStatusRequest;
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\ServiceManager\ServiceLocator;
-use Zend\ServiceManager\ServiceManagerAwareInterface;
-use Zend\View\Model\ViewModel;
+use Zend\Di\ServiceLocator;
 
 class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
         $tokenStorage = $this->getServiceLocator()->get('payum.security.token_storage');
-        $storage = $this->getServiceLocator()->get('payum')->getStorageForClass('Application\Model\PaypalPaymentDetails', 'paypal');
+        $storage = $this->getServiceLocator()->get('payum')->getStorageForClass('Application\Model\PaymentDetails', 'paypal');
 
         $paymentDetails = $storage->createModel();
         $paymentDetails['PAYMENTREQUEST_0_CURRENCYCODE'] = 'EUR';
@@ -31,7 +29,7 @@ class IndexController extends AbstractActionController
         $doneToken->setPaymentName('paypal');
         $doneToken->setDetails($storage->getIdentificator($paymentDetails));
         $doneToken->setTargetUrl($this->url()->fromRoute(
-            'payment_details',
+            'done',
             array(),
             array('force_canonical' => true, 'query' => array('payum_token' => $doneToken->getHash()))
         ));

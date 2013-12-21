@@ -1,9 +1,8 @@
 <?php
 use Buzz\Client\Curl;
-use Payum\Extension\StorageExtension;
+use Payum\Core\Storage\FilesystemStorage;
 use Payum\Paypal\ExpressCheckout\Nvp\Api;
 use Payum\Paypal\ExpressCheckout\Nvp\PaymentFactory;
-use Payum\Storage\FilesystemStorage;
 
 /**
  * Global Configuration Override
@@ -24,19 +23,11 @@ $paypalPayment = PaymentFactory::create(new Api(new Curl(), array(
     'sandbox' => true
 )));
 
-$paypalPaymentDetailsStorage = new FilesystemStorage(
-    __DIR__.'/../../data',
-    'Application\Model\PaypalPaymentDetails',
-    'id'
-);
-
-$paypalPayment->addExtension(new StorageExtension($paypalPaymentDetailsStorage));
-
 return array(
     'payum' => array(
         'token_storage' => new FilesystemStorage(
             __DIR__.'/../../data',
-            'Payum\Model\Token',
+            'Application\Model\PaymentSecurityToken',
             'hash'
         ),
         'payments' => array(
@@ -44,7 +35,10 @@ return array(
         ),
         'storages' => array(
             'paypal' => array(
-                'Application\Model\PaypalPaymentDetails' => $paypalPaymentDetailsStorage,
+                'Application\Model\PaymentDetails' => new FilesystemStorage(
+                    __DIR__.'/../../data',
+                    'Application\Model\PaymentDetails'
+                )
             )
         )
     ),
