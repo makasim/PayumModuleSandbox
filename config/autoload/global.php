@@ -34,11 +34,9 @@ return array(
             'paypal' => $paypalPayment
         ),
         'storages' => array(
-            'paypal' => array(
-                'Application\Model\PaymentDetails' => new FilesystemStorage(
-                    __DIR__.'/../../data',
-                    'Application\Model\PaymentDetails'
-                )
+            'Application\Model\PaymentDetails' => new FilesystemStorage(
+                __DIR__.'/../../data',
+                'Application\Model\PaymentDetails'
             )
         )
     ),
