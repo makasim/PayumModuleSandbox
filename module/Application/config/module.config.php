@@ -10,16 +10,6 @@
 return array(
     'router' => array(
         'routes' => array(
-            'done' => array(
-                'type' => 'segment',
-                'options' => array(
-                    'route'    => '/done[/:payum_token]',
-                    'defaults' => array(
-                        'controller' => 'Application\Controller\Index',
-                        'action'     => 'done',
-                    ),
-                ),
-            ),
             'home' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -30,6 +20,41 @@ return array(
                     ),
                 ),
             ),
+
+            'payment_paypal_es' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/paypal/prepare-ec',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller' => 'Payment',
+                        'action' => 'paypalEc'
+                    ),
+                ),
+            ),
+            'payment_stripe_js' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/stripe/prepare-js',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller'    => 'Payment',
+                        'action' => 'stripeJs'
+                    ),
+                ),
+            ),
+            'payment_done' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/payment/done[/:payum_token]',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller' => 'Payment',
+                        'action' => 'done'
+                    ),
+                ),
+            ),
+
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
@@ -83,7 +108,8 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Application\Controller\Index' => 'Application\Controller\IndexController'
+            'Application\Controller\Index' => 'Application\Controller\IndexController',
+            'Application\Controller\Payment' => 'Application\Controller\PaymentController',
         ),
     ),
     'view_manager' => array(
@@ -100,6 +126,9 @@ return array(
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
+        ),
+        'strategies' => array(
+            'ViewJsonStrategy',
         ),
     ),
     // Placeholder for console routes
