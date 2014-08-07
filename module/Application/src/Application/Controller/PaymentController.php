@@ -9,7 +9,7 @@
 
 namespace Application\Controller;
 
-use Payum\Core\Request\SimpleStatusRequest;
+use Payum\Core\Request\GetHumanStatus;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Di\ServiceLocator;
 use Zend\View\Model\JsonModel;
@@ -61,7 +61,7 @@ class PaymentController extends AbstractActionController
 
         $payment = $this->getServiceLocator()->get('payum')->getPayment($token->getPaymentName());
 
-        $payment->execute($status = new SimpleStatusRequest($token));
+        $payment->execute($status = new GetHumanStatus($token));
 
         return new JsonModel(array('status' => $status->getStatus(), 'details' => iterator_to_array($status->getModel())));
     }
