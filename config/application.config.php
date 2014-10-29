@@ -15,6 +15,7 @@ return array(
         'module_paths' => array(
             './module',
             './vendor',
+            './vendor/payum/payum-module',
         ),
 
         // An array of paths from which to glob configuration files after

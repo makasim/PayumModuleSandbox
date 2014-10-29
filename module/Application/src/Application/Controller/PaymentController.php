@@ -63,6 +63,6 @@ class PaymentController extends AbstractActionController
 
         $payment->execute($status = new GetHumanStatus($token));
 
-        return new JsonModel(array('status' => $status->getStatus(), 'details' => iterator_to_array($status->getModel())));
+        return new JsonModel(array('status' => $status->getValue(), 'details' => iterator_to_array($status->getModel())));
     }
 }
