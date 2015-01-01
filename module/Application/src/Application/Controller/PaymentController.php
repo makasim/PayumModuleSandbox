@@ -20,11 +20,11 @@ class PaymentController extends AbstractActionController
     {
         $storage = $this->getServiceLocator()->get('payum')->getStorage('Application\Model\PaymentDetails');
 
-        $details = $storage->createModel();
+        $details = $storage->create();
         $details["amount"] = 100;
         $details["currency"] = 'USD';
         $details["description"] = 'a description';
-        $storage->updateModel($details);
+        $storage->update($details);
 
         // FIXIT: I dont know how to inject controller plugin to the service.
         $this->getServiceLocator()->get('payum.security.token_factory')->setUrlPlugin($this->url());
@@ -40,16 +40,16 @@ class PaymentController extends AbstractActionController
     {
         $storage = $this->getServiceLocator()->get('payum')->getStorage('Application\Model\PaymentDetails');
 
-        $details = $storage->createModel();
+        $details = $storage->create();
         $details['PAYMENTREQUEST_0_CURRENCYCODE'] = 'EUR';
         $details['PAYMENTREQUEST_0_AMT'] = 1.23;
-        $storage->updateModel($details);
+        $storage->update($details);
 
         // FIXIT: I dont know how to inject controller plugin to the service.
         $this->getServiceLocator()->get('payum.security.token_factory')->setUrlPlugin($this->url());
 
         $captureToken = $this->getServiceLocator()->get('payum.security.token_factory')->createCaptureToken(
-            'paypal_es', $details, 'payment_done'
+            'paypal_ec', $details, 'payment_done'
         );
 
         $this->redirect()->toUrl($captureToken->getTargetUrl());
@@ -63,6 +63,6 @@ class PaymentController extends AbstractActionController
 
         $payment->execute($status = new GetHumanStatus($token));
 
-        return new JsonModel(array('status' => $status->getValue(), 'details' => iterator_to_array($status->getModel())));
+        return new JsonModel(array('status' => $status->getValue(), 'details' => iterator_to_array($status->getFirstModel())));
     }
 }

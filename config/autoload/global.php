@@ -17,16 +17,8 @@ use Payum\Stripe\PaymentFactory as StripePaymentFactory;
  * file.
  */
 
-$paypalEcPayment = PaypalEcPaymentFactory::create(new Api(array(
-    'username' => 'testrj_1312968849_biz_api1.remixjobs.com',
-    'password' => '1312968888',
-    'signature' => 'Azgw.f7NYjBAlDQEpbI1D06D4ACAAXfoVSV7k4JUuGAPRHzhDbQR2r90',
-    'sandbox' => true
-)));
-
-$stripeJsPayment = StripePaymentFactory::createJs(
-    new Keys('pk_test_CHXb4QMWMv9dCqBZaXpUULyl', 'sk_test_LwdYAFTlciJL5WzULQjzgC1p')
-);
+$paypalExpressCheckoutPaymentFactory = new \Payum\Paypal\ExpressCheckout\Nvp\PaymentFactory();
+$stripeJsPaymentFactory = new \Payum\Stripe\JsPaymentFactory();
 
 return array(
     'payum' => array(
@@ -36,8 +28,16 @@ return array(
             'hash'
         ),
         'payments' => array(
-            'paypal_es' => $paypalEcPayment,
-            'stripe_js' => $stripeJsPayment,
+            'paypal_ec' => $paypalExpressCheckoutPaymentFactory->create(array(
+                'username' => 'testrj_1312968849_biz_api1.remixjobs.com',
+                'password' => '1312968888',
+                'signature' => 'Azgw.f7NYjBAlDQEpbI1D06D4ACAAXfoVSV7k4JUuGAPRHzhDbQR2r90',
+                'sandbox' => true
+            )),
+            'stripe_js' => $stripeJsPaymentFactory->create(array(
+                'publishable_key' => 'pk_test_CHXb4QMWMv9dCqBZaXpUULyl',
+                'secret_key' => 'sk_test_LwdYAFTlciJL5WzULQjzgC1p',
+            )),
         ),
         'storages' => array(
             'Application\Model\PaymentDetails' => new FilesystemStorage(

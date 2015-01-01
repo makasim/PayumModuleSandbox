@@ -21,7 +21,7 @@ return array(
                 ),
             ),
 
-            'payment_paypal_es' => array(
+            'payment_paypal_ec' => array(
                 'type' => 'Segment',
                 'options' => array(
                     'route' => '/paypal/prepare-ec',

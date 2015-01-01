@@ -10,7 +10,7 @@
     "require": {
         "php": ">=5.3.3",
         "zendframework/zendframework": "2.2.*",
-        "payum/payum": "0.12.*@dev",
-        "payum/payum-module": "0.12.*@dev"
+        "payum/payum": "0.13.*@dev",
+        "payum/payum-module": "0.13.*@dev"
     }
 }
