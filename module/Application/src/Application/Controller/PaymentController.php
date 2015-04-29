@@ -51,11 +51,11 @@ class PaymentController extends AbstractActionController
 
     public function doneAction()
     {
-        $token = $this->getServiceLocator()->get('payum.security.http_request_verifier')->verify($this->getRequest());
+        $token = $this->getServiceLocator()->get('payum.security.http_request_verifier')->verify($this);
 
-        $payment = $this->getServiceLocator()->get('payum')->getPayment($token->getPaymentName());
+        $gateway = $this->getServiceLocator()->get('payum')->getgateway($token->getgatewayName());
 
-        $payment->execute($status = new GetHumanStatus($token));
+        $gateway->execute($status = new GetHumanStatus($token));
 
         return new JsonModel(array('status' => $status->getValue(), 'details' => iterator_to_array($status->getFirstModel())));
     }
